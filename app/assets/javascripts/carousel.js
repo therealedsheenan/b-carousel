@@ -1,25 +1,25 @@
-(function (window) {
-  var items;
-  var currentStage = 1;
+(function(window) {
+  let items;
+  let currentStage = 1;
 
   document.addEventListener("DOMContentLoaded", function() {
-    var carousel = document.getElementById("carousel");
-    var carouselStage = document.getElementById("carousel-stage");
-    var carouselItem = document.getElementsByClassName("carousel-item");
+    const carousel = document.getElementById("carousel");
+    const carouselStage = document.getElementById("carousel-stage");
+    const carouselItem = document.getElementsByClassName("carousel-item");
 
-    var computeCarouselItemStyles = window.getComputedStyle(carouselItem[0]);
-    var computeCarouselStageStyles = window.getComputedStyle(carouselStage);
-    var carouselItemWidth = carouselItem[0].clientWidth
+    const computeCarouselItemStyles = window.getComputedStyle(carouselItem[0]);
+    const computeCarouselStageStyles = window.getComputedStyle(carouselStage);
+    const carouselItemWidth = carouselItem[0].clientWidth
       + parseInt(computeCarouselItemStyles.getPropertyValue("margin-right").replace("px",""));
-    var carouselWidth = carousel.clientWidth;
-    var carouselItemsLength = carouselItem.length;
+    const carouselWidth = carousel.clientWidth;
+    const carouselItemsLength = carouselItem.length;
 
     // setup carousel
     setupCarousel();
 
     // carousel controls
-    var prevButton =  document.getElementById("prev-button");
-    var nextButton =  document.getElementById("next-button");
+    const prevButton =  document.getElementById("prev-button");
+    const nextButton =  document.getElementById("next-button");
 
     prevButton.addEventListener("click", function () {
       console.log("move previous")
@@ -33,10 +33,10 @@
 
     // setting up carousel
     function setupCarousel () {
-      var itemPerBlock = 4;
+      const itemPerBlock = 4;
       items = Math.round(carouselItemsLength / itemPerBlock);
 
-      var stageLeftValue = computeCarouselStageStyles.getPropertyValue("left").replace("px","");
+      const stageLeftValue = computeCarouselStageStyles.getPropertyValue("left").replace("px","");
 
       if (stageLeftValue === 0) {
         currentStage = 1;
@@ -46,7 +46,7 @@
     }
 
     function moveCarousel () {
-      var width = carouselWidth * (Math.abs(currentStage - items));
+      const width = carouselWidth * (Math.abs(currentStage - items));
       debugger
       if (items < currentStage) {
         carouselStage.style.left = "-960px";
