@@ -1,59 +1,85 @@
 (function(window) {
-  let items;
+  let blocks;
   let currentStage = 1;
 
-  document.addEventListener("DOMContentLoaded", function() {
+  // Initialize and setup carousel when DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
     const carousel = document.getElementById("carousel");
     const carouselStage = document.getElementById("carousel-stage");
-    const carouselItem = document.getElementsByClassName("carousel-item");
+    const carouselItems = document.getElementsByClassName("carousel-item");
 
-    const computeCarouselItemStyles = window.getComputedStyle(carouselItem[0]);
-    const computeCarouselStageStyles = window.getComputedStyle(carouselStage);
-    const carouselItemWidth = carouselItem[0].clientWidth
-      + parseInt(computeCarouselItemStyles.getPropertyValue("margin-right").replace("px",""));
+    // carousel control buttons
+    const prevButton =  document.getElementById("prev-button");
+    const nextButton =  document.getElementById("next-button");
+
+    const carouselItemWidth = carouselItems[0].clientWidth
+      + parseInt(window.getComputedStyle(carouselItems[0]).getPropertyValue("margin-right").replace("px",""));
     const carouselWidth = carousel.clientWidth;
-    const carouselItemsLength = carouselItem.length;
+    const carouselItemsLength = carouselItems.length;
 
     // setup carousel
     setupCarousel();
 
-    // carousel controls
-    const prevButton =  document.getElementById("prev-button");
-    const nextButton =  document.getElementById("next-button");
-
     prevButton.addEventListener("click", function () {
-      console.log("move previous")
-      moveCarousel()
+      if (currentStage !== 1) {
+        const prevValue = currentStage - 1;
+        moveCarousel(prevValue);
+        return prevValue === 1
+          ? disableButton(prevButton)
+          : enableButton(prevButton);
+      }
     });
 
     nextButton.addEventListener("click", function () {
-      console.log("move next")
-      moveCarousel()
+      if (currentStage + 1 <= blocks) {
+        const nextValue = currentStage + 1;
+        moveCarousel(nextValue);
+        return nextValue >= blocks
+          ? disableButton(nextButton)
+          : enableButton(nextButton);
+      }
     });
 
     // setting up carousel
     function setupCarousel () {
-      const itemPerBlock = 4;
-      items = Math.round(carouselItemsLength / itemPerBlock);
+      const itemsPerBlock = carouselWidth / carouselItemWidth;
+      blocks = Math.ceil(carouselItemsLength / itemsPerBlock);
 
-      const stageLeftValue = computeCarouselStageStyles.getPropertyValue("left").replace("px","");
+      const stageLeftValue = Math.abs(
+        parseInt(window.getComputedStyle(carouselStage).getPropertyValue("left").replace("px",""))
+      );
 
       if (stageLeftValue === 0) {
         currentStage = 1;
       } else {
         currentStage = Math.round((stageLeftValue / carouselWidth) + 1);
       }
+
+      prevButton.disabled = false;
+      nextButton.disabled = false;
     }
 
-    function moveCarousel () {
-      const width = carouselWidth * (Math.abs(currentStage - items));
-      debugger
-      if (items < currentStage) {
-        carouselStage.style.left = "-960px";
-        // var stageLeftValue = computeCarouselStageStyles.getPropertyValue("left").replace("px","");
+    // move carousel function from left to right
+    function moveCarousel (blocks) {
+      const currentValue = parseInt(window.getComputedStyle(carouselStage).getPropertyValue("left").replace("px",""));
+
+      if (blocks < currentStage) {
+        carouselStage.style.left = `${currentValue + carouselWidth}px`;
       } else {
-        carouselStage.style.left = "-960px";
+        carouselStage.style.left = `${currentValue - carouselWidth}px`;
       }
+
+      setupCarousel();
+    }
+
+    // utility function for disabling a button
+    function disableButton (button) {
+      return button.disabled = true;
+    }
+
+    // utility function for enabling a button
+    function enableButton (button) {
+      return button.disabled = false;
     }
 
   });

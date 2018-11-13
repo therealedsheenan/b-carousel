@@ -36,6 +36,32 @@ class HomeController < ApplicationController
         https://picsum.photos/235/248/?random
         https://picsum.photos/235/248/?random
       ]
+    }, {
+      title: 'Sixth block',
+      images: %w[
+        https://picsum.photos/235/241/?random
+        https://picsum.photos/235/243/?random
+      ]
+    }, {
+      title: 'Seventh block',
+      images: %w[
+        https://picsum.photos/235/243/?random
+        https://picsum.photos/235/245/?random
+        https://picsum.photos/235/242/?random
+        https://picsum.photos/235/243/?random
+      ]
+    }, {
+      title: 'Eighth block',
+      images: %w[
+        https://picsum.photos/235/241/?random
+        https://picsum.photos/235/243/?random
+      ]
+    }, {
+      title: 'Ninth block',
+      images: %w[
+        https://picsum.photos/235/241/?random
+        https://picsum.photos/235/243/?random
+      ]
     }]
   end
 end
